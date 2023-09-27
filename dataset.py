@@ -135,9 +135,3 @@ class ContentOrientedDataset(Dataset):
         img, face_mask, structure_mask = self._transforms(img, face_mask, structure_mask)
         return [img, face_mask, structure_mask], bpp
 
-root = "dataset"
-dataset = ContentOrientedDataset(root=root, crop_size=256, normalize=False)
-[img, face_mask, structure_mask], bpp = dataset[0]
-print()
-
-        

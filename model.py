@@ -26,6 +26,3 @@ class DummyModel(nn.Module):
         x_decoded = self.decoder(x_encoded)
         x_decoded = x_decoded.view(-1,3,256,256)
         return x_decoded
-
-
-model = DummyModel()
