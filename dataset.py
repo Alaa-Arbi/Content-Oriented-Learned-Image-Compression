@@ -102,7 +102,8 @@ class ContentOrientedDataset(Dataset):
     def preprocess(self):
         # detect all small faces and save them to face_coords.json file
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        model = df.load_model(['m'], device)
+        weights = "yolov5_face/weights/yolov5m-face.pt"
+        model = df.load_model(weights, device)
         in_dir = os.path.join(self.data_dir, "images")
         out_file = os.path.join(self.data_dir, "face_coords.json")
         df.detect(model, in_dir, out_file)
