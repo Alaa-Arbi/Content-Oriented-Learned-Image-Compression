@@ -85,7 +85,7 @@ def detect(
     source_dir,
     output_file
     ):
-
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     img_size = 640
     conf_thres = 0.6
     iou_thres = 0.5
