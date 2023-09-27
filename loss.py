@@ -3,7 +3,7 @@ from torchvision import transforms
 import torch.nn as nn 
 import torch.nn.functional as F
 import torchvision.transforms.functional as TF
-from src.loss.perceptual_similarity import perceptual_loss as ps
+from perceptual_similarity import perceptual_loss as ps
 
 from collections import namedtuple
 
