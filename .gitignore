@@ -1,1 +1,4 @@
 *.pt
+*face_coords.json
+*/structure_masks/*
+*.pyc

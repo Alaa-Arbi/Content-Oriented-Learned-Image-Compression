@@ -12,7 +12,6 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 import torch.nn.functional as F
 import torchvision.transforms.functional as TF
-
 from generate_structure_masks import generate_masks
 import yolov5_face.detect_face as df
 
@@ -36,6 +35,9 @@ class ContentOrientedDataset(Dataset):
             self.preprocess()
         with open(json_file_path, 'r') as json_file:
             self.face_coords = json.load(json_file)
+    
+    def __len__(self):
+        return len(self.imgs)
 
     def _augment(self, img, face_masks, structure_masks):
         """
@@ -102,13 +104,14 @@ class ContentOrientedDataset(Dataset):
     def preprocess(self):
         # detect all small faces and save them to face_coords.json file
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        model = df.load_model(['m'], device)
+        weights = os.system("gdown --id 1Sx-KEGXSxvPMS35JhzQKeRBiqC98VDDI -O yolov5_face/weights/yolov5m.pt")
+        model = df.load_model("yolov5_face/weights/yolov5m.pt", device)
         in_dir = os.path.join(self.data_dir, "images")
         out_file = os.path.join(self.data_dir, "face_coords.json")
         df.detect(model, in_dir, out_file)
         # create structure masks using canny edge detector
         config = namedtuple("MaskGenerationConfig",
-                                    ["input_dir ",             
+                                    ["input_dir",             
                                     "output_dir",         
                                     "min",      
                                     "max"])   
@@ -134,6 +137,7 @@ class ContentOrientedDataset(Dataset):
 
 root = "dataset"
 dataset = ContentOrientedDataset(root=root, crop_size=256, normalize=False)
+[img, face_mask, structure_mask], bpp = dataset[0]
 print()
 
         
